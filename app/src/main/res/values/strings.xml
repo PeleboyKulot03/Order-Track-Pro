@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">ORDER TRACK PRO</string>
+    <string name="banner">banner</string>
+    <string name="username">username</string>
+    <string name="log_in">login</string>
+    <string name="sign_up_prompt">don\'t have an account?</string>
+    <string name="sign_up">sign up</string>
+    <string name="or">or</string>
+    <string name="forgotten_password">forgotten password?</string>
+    <string name="password">password</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="account">Account</string>
+    <string name="menu">Menu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">logout</string>
+    <string name="profile_photo">profile picture</string>
+    <string name="sample_name">Cashier\'s Name</string>
+    <string name="template">to update</string>
 </resources>
