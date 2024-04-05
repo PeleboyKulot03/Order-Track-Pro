@@ -17,4 +17,7 @@
     <string name="profile_photo">profile picture</string>
     <string name="sample_name">Cashier\'s Name</string>
     <string name="template">to update</string>
+    <string name="dine_in">Dine in</string>
+    <string name="take_out">Take Out</string>
+    <string name="choose_one_option">Choose One Option</string>
 </resources>
