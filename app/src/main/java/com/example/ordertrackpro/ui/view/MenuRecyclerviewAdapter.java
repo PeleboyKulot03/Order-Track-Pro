@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ordertrackpro.R;
 import com.example.ordertrackpro.utils.MenuModel;
 
@@ -37,12 +38,13 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<MenuRecyclervi
     @Override
     public void onBindViewHolder(@NonNull MenuRecyclerviewAdapter.ViewHolder holder, int position) {
         MenuModel model = models.get(holder.getAdapterPosition());
-        holder.foodName.setText(model.getFoodName());
+        holder.foodName.setText(model.getName());
         String qtyString = "x" + model.getQty();
         String priceString = "₱ " + model.getPrice();
         holder.qty.setText(qtyString);
         holder.price.setText(priceString);
-        holder.foodImage.setImageDrawable(activity.getDrawable(model.getImageUrl()));
+        Glide.with(context).load(model.getImageUrl()).into(holder.foodImage);
+//        holder.foodImage.setImageDrawable(activity.getDrawable(model.getImageUrl()));
     }
 
     @Override
