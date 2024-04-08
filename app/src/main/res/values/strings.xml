@@ -20,4 +20,14 @@
     <string name="dine_in">Dine in</string>
     <string name="take_out">Take Out</string>
     <string name="choose_one_option">Choose One Option</string>
+    <string name="ala_cart">ALA CARTE</string>
+    <string name="rice_meal">RICE MEALS</string>
+    <string name="drinks_and_dessert">DRINKS AND DESSERTS</string>
+    <string name="barbeque">barbeque</string>
+    <string name="bbq_inasal_price">₱ 85</string>
+    <string name="bbq_inasal_qty">x3</string>
+    <string name="bbq_inasal">BBQ Inasal</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="cart">cart</string>
+    <string name="logo">logo</string>
 </resources>
