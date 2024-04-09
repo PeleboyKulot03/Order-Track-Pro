@@ -1,34 +1,33 @@
 package com.example.ordertrackpro.ui.view;
 
+import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.ordertrackpro.R;
 import com.example.ordertrackpro.ui.controller.IMenuFragment;
+import com.example.ordertrackpro.utils.CartModel;
 import com.example.ordertrackpro.utils.MenuModel;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.ArrayList;
 import java.util.Objects;
+import ru.nikartm.support.ImageBadgeView;
 
 public class MenuFragment extends Fragment implements IMenuFragment {
     private ViewPager2 pager;
     private TabLayout tabLayout;
+    private ArrayList<CartModel> cartModels;
+    private ImageBadgeView cart;
     private final int[] tabIcons = {
             R.drawable.lunch_dining_fill0_wght400_grad0_opsz24,
             R.drawable.fastfood_fill0_wght400_grad0_opsz24,
@@ -40,19 +39,22 @@ public class MenuFragment extends Fragment implements IMenuFragment {
             "Drinks and Deserts"
     };
     private String modeOfEating = "";
+    private MenuModel menuModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        cart = view.findViewById(R.id.cart);
+        cartModels = new ArrayList<>();
         LinearLayout firstPhase = view.findViewById(R.id.firstPhase);
         LinearLayout secondPhase = view.findViewById(R.id.secondPhase);
         CardView dineIn = view.findViewById(R.id.dineIn);
         CardView takeOut = view.findViewById(R.id.takeOut);
-        ImageView cart = view.findViewById(R.id.cart);
 
-        MenuModel menuModel = new MenuModel();
+        menuModel = new MenuModel();
         menuModel.getProducts(this);
+        menuModel.getNumOrders(this);
 
         dineIn.setOnClickListener(v -> {
             firstPhase.setVisibility(View.GONE);
@@ -69,15 +71,8 @@ public class MenuFragment extends Fragment implements IMenuFragment {
             secondPhase.animate().alpha(1.0f).setDuration(1000);
         });
 
-        cart.setOnClickListener(v -> {
-
-        });
         pager = view.findViewById(R.id.pager);
         tabLayout = view.findViewById(R.id.tabLayout);
-
-//        ArrayList<MenuModel> alaCarts = getModels();
-//        ArrayList<MenuModel> drinks = getMenuModels();
-//        ArrayList<MenuModel> riceMealList = getMenuModelArrayList();
 
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -96,7 +91,10 @@ public class MenuFragment extends Fragment implements IMenuFragment {
                 super.onPageScrollStateChanged(state);
             }
         });
-        
+
+        cart.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), CartActivity.class));
+        });
         return view;
     }
 
@@ -115,11 +113,29 @@ public class MenuFragment extends Fragment implements IMenuFragment {
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
     }
 
+    @Override
+    public void addToCart(CartModel cartModel) {
+        menuModel.addToCart(MenuFragment.this, cartModel);
+    }
+
+    @Override
+    public void onAddToCart(boolean verdict, String cause) {
+        if (verdict) {
+            cart.setBadgeValue(cart.getBadgeValue() + 1);
+        }
+        Toast.makeText(getContext(), cause, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetItemCount(int count) {
+        cart.setBadgeValue(count);
+    }
+
     @NonNull
     private ArrayList<MenuRecyclerviewAdapter> getMenuRecyclerviewAdapters(ArrayList<ArrayList<MenuModel>> models) {
-        MenuRecyclerviewAdapter alaCartAdapter = new MenuRecyclerviewAdapter(models.get(0), getContext(), getActivity());
-        MenuRecyclerviewAdapter riceMealAdapter = new MenuRecyclerviewAdapter(models.get(2), getContext(), getActivity());
-        MenuRecyclerviewAdapter drinksAndDessertAdapter = new MenuRecyclerviewAdapter(models.get(1), getContext(), getActivity());
+        MenuRecyclerviewAdapter alaCartAdapter = new MenuRecyclerviewAdapter(models.get(0), getContext(), getActivity(), MenuFragment.this);
+        MenuRecyclerviewAdapter riceMealAdapter = new MenuRecyclerviewAdapter(models.get(2), getContext(), getActivity(), MenuFragment.this);
+        MenuRecyclerviewAdapter drinksAndDessertAdapter = new MenuRecyclerviewAdapter(models.get(1), getContext(), getActivity(), MenuFragment.this);
 
         ArrayList<MenuRecyclerviewAdapter> adapters = new ArrayList<>();
         adapters.add(alaCartAdapter);

@@ -125,15 +125,21 @@
                 app:titleTextColor="@color/white"
                 app:titleMarginStart="20dp"
                 >
-                <ImageView
+                <ru.nikartm.support.ImageBadgeView
                     android:id="@+id/cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/local_mall"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="20dp"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/cart"/>
+                    app:ibv_badgeTextSize="12sp"
+                    app:ibv_fixedBadgeRadius="8dp"
+                    app:ibv_badgeTextStyle="bold"
+                    app:ibv_badgeTextColor="#ffffff"
+                    app:ibv_badgeColor="@color/tertiary"
+                    app:ibv_badgeLimitValue="false"
+                    android:src="@drawable/local_mall"
+                    android:tint="@color/white"
+                    android:layout_marginEnd="10dp"
+                    />
 
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>

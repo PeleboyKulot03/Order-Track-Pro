@@ -1,10 +1,15 @@
 package com.example.ordertrackpro.utils;
 
+import android.util.Log;
 import android.view.Menu;
 
 import androidx.annotation.NonNull;
 
 import com.example.ordertrackpro.ui.controller.IMenuFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +34,7 @@ public class MenuModel {
     }
     public MenuModel() {
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Products");
+        reference = database.getReference();
     }
 
     public String getImageUrl() {
@@ -50,7 +55,7 @@ public class MenuModel {
 
     public void getProducts(IMenuFragment iMenuFragment) {
         ArrayList<ArrayList<MenuModel>> models = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.child("Products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot meal: snapshot.getChildren()) {
@@ -69,6 +74,40 @@ public class MenuModel {
                 iMenuFragment.getProducts(null);
             }
         });
+    }
 
+    public void addToCart(IMenuFragment iMenuFragment, CartModel model) {
+
+        reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild(model.getName())) {
+                    int qty = snapshot.child(model.getName()).child("qtyNumber").getValue(Integer.class) + model.getQtyNumber();
+                    snapshot.child(model.getName()).child("qtyNumber").getRef().setValue(qty);
+                    snapshot.child(model.getName()).child("total").getRef().setValue(qty * model.getPrice());
+                    return;
+                }
+                reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").child(model.getName()).setValue(model).addOnSuccessListener(unused -> iMenuFragment.onAddToCart(true, "Adding item to cart successfully!")).addOnFailureListener(e -> iMenuFragment.onAddToCart(false, e.getLocalizedMessage()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                iMenuFragment.onAddToCart(false, error.getMessage());
+            }
+        });
+    }
+
+    public void getNumOrders(IMenuFragment iMenuFragment) {
+        reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                iMenuFragment.onGetItemCount((int) snapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                iMenuFragment.onGetItemCount(0);
+            }
+        });
     }
 }
