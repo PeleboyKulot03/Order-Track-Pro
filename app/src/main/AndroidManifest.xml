@@ -16,7 +16,7 @@
             android:name=".ui.view.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.view.ShowAddItem"
+            android:name=".ui.customViews.ShowAddItem"
             android:exported="false" />
         <activity
             android:name=".ui.view.HomePageActivity"

@@ -58,6 +58,7 @@ public class CartActivityAdapter extends RecyclerView.Adapter<CartActivityAdapte
             }
             cartModel.updateItem(model.getName(), curQty);
         });
+        holder.remove.setOnClickListener(v -> cartModel.deleteItem(model.getName()));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.ordertrackpro.ui.view;
+package com.example.ordertrackpro.ui.customViews;
 
 import android.app.Dialog;
 import android.content.Context;
