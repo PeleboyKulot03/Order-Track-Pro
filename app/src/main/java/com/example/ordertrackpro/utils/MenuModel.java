@@ -1,10 +1,14 @@
 package com.example.ordertrackpro.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 
 import androidx.annotation.NonNull;
 
+import com.example.ordertrackpro.R;
 import com.example.ordertrackpro.ui.controller.IMenuFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -76,9 +80,10 @@ public class MenuModel {
         });
     }
 
-    public void addToCart(IMenuFragment iMenuFragment, CartModel model) {
-
-        reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void addToCart(IMenuFragment iMenuFragment, CartModel model, Activity activity) {
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
+        String name = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
+        reference.child("Employees").child(name).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild(model.getName())) {
@@ -87,7 +92,7 @@ public class MenuModel {
                     snapshot.child(model.getName()).child("total").getRef().setValue(qty * model.getPrice());
                     return;
                 }
-                reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").child(model.getName()).setValue(model).addOnSuccessListener(unused -> iMenuFragment.onAddToCart(true, "Adding item to cart successfully!")).addOnFailureListener(e -> iMenuFragment.onAddToCart(false, e.getLocalizedMessage()));
+                reference.child("Employees").child(name).child("cart").child(model.getName()).setValue(model).addOnSuccessListener(unused -> iMenuFragment.onAddToCart(true, "Adding item to cart successfully!")).addOnFailureListener(e -> iMenuFragment.onAddToCart(false, e.getLocalizedMessage()));
             }
 
             @Override
@@ -97,8 +102,10 @@ public class MenuModel {
         });
     }
 
-    public void getNumOrders(IMenuFragment iMenuFragment) {
-        reference.child("Employees").child("fsahkjfaksjhfsa").child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getNumOrders(IMenuFragment iMenuFragment, Activity activity) {
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
+        String name = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
+        reference.child("Employees").child(name).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 iMenuFragment.onGetItemCount((int) snapshot.getChildrenCount());

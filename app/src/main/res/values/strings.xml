@@ -36,4 +36,11 @@
     <string name="total">Total: ₱ 0.00</string>
     <string name="check_out">Check Out</string>
     <string name="remove">remove</string>
+    <string name="warning_template">Delete Caution</string>
+    <string name="warning_sentence">Are you sure that you want to delete this item?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="get_user">current user</string>
+    <string name="key">key</string>
+    <string name="get_photo">get photo</string>
 </resources>

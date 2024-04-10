@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ordertrackpro.R;
@@ -26,7 +27,6 @@ import ru.nikartm.support.ImageBadgeView;
 public class MenuFragment extends Fragment implements IMenuFragment {
     private ViewPager2 pager;
     private TabLayout tabLayout;
-    private ArrayList<CartModel> cartModels;
     private ImageBadgeView cart;
     private final int[] tabIcons = {
             R.drawable.lunch_dining_fill0_wght400_grad0_opsz24,
@@ -40,21 +40,24 @@ public class MenuFragment extends Fragment implements IMenuFragment {
     };
     private String modeOfEating = "";
     private MenuModel menuModel;
+    private LinearLayout firstPhase;
+    private LinearLayout secondPhase;
+    private ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         cart = view.findViewById(R.id.cart);
-        cartModels = new ArrayList<>();
-        LinearLayout firstPhase = view.findViewById(R.id.firstPhase);
-        LinearLayout secondPhase = view.findViewById(R.id.secondPhase);
+        firstPhase = view.findViewById(R.id.firstPhase);
+        secondPhase = view.findViewById(R.id.secondPhase);
         CardView dineIn = view.findViewById(R.id.dineIn);
         CardView takeOut = view.findViewById(R.id.takeOut);
+        progressBar = view.findViewById(R.id.progressBar);
 
         menuModel = new MenuModel();
         menuModel.getProducts(this);
-        menuModel.getNumOrders(this);
+        menuModel.getNumOrders(this, getActivity());
 
         dineIn.setOnClickListener(v -> {
             firstPhase.setVisibility(View.GONE);
@@ -94,6 +97,7 @@ public class MenuFragment extends Fragment implements IMenuFragment {
 
         cart.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), CartActivity.class));
+            getActivity().finish();
         });
         return view;
     }
@@ -115,7 +119,7 @@ public class MenuFragment extends Fragment implements IMenuFragment {
 
     @Override
     public void addToCart(CartModel cartModel) {
-        menuModel.addToCart(MenuFragment.this, cartModel);
+        menuModel.addToCart(MenuFragment.this, cartModel, getActivity());
     }
 
     @Override
@@ -128,7 +132,14 @@ public class MenuFragment extends Fragment implements IMenuFragment {
 
     @Override
     public void onGetItemCount(int count) {
-        cart.setBadgeValue(count);
+        progressBar.setVisibility(View.GONE);
+        if (count > 0) {
+            firstPhase.setVisibility(View.GONE);
+            secondPhase.setVisibility(View.VISIBLE);
+            cart.setBadgeValue(count);
+            return;
+        }
+        firstPhase.setVisibility(View.VISIBLE);
     }
 
     @NonNull

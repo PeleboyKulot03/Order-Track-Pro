@@ -45,12 +45,25 @@
         />
 
     <Button
-        android:id="@+id/addMeal"
+        android:id="@+id/cancelOrder"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:backgroundTint="@color/primary"
+        android:text="@string/cancel_order"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/checkOut"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_margin="10dp"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/black"
         android:text="@string/check_out"
+        android:textSize="16sp"
         android:textColor="@color/white" />
 
 

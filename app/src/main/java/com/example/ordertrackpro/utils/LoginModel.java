@@ -1,40 +1,36 @@
 package com.example.ordertrackpro.utils;
 
-import androidx.annotation.NonNull;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.example.ordertrackpro.R;
 import com.example.ordertrackpro.ui.controller.ILoginPage;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
 
 public class LoginModel {
     private FirebaseAuth auth;
     private final ILoginPage iLoginPage;
-    public LoginModel(ILoginPage iLoginPage) {
+    private final Activity activity;
+    public LoginModel(ILoginPage iLoginPage, Activity activity) {
         auth = FirebaseAuth.getInstance();
         this.iLoginPage = iLoginPage;
+        this.activity = activity;
     }
     public void signIn(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(task -> iLoginPage.onLogin(true, "Login Success!")).addOnFailureListener(e -> iLoginPage.onLogin(false, e.getMessage()));
+        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(task -> {
+            SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            Log.i("TAGELE", "signIn: " + task.getUser().getDisplayName());
+            editor.putString(activity.getString(R.string.get_user), Objects.requireNonNull(task.getUser()).getDisplayName());
+            editor.putString(activity.getString(R.string.get_photo), Objects.requireNonNull(task.getUser().getPhotoUrl().toString()));
+            editor.apply();
+            iLoginPage.onLogin(true, "Login Successfully");
+        }).addOnFailureListener(e -> iLoginPage.onLogin(false, e.getMessage()));
 
-//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot user: snapshot.getChildren()) {
-//                    if (Objects.equals(user.child("informations").child("username").getValue(String.class), username)) {
-//                        String email = user.child("informations").child("email").getValue(String.class);
-//                        if (email != null) {
-//                        }
-//                        return;
-//                    }
-//                }
-//                iLoginPage.onLogin(false, "Username or Password is incorrect!");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                iLoginPage.onLogin(false, error.getMessage());
-//            }
-//        });
     }
 }

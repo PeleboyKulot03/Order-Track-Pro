@@ -20,8 +20,8 @@ import com.example.ordertrackpro.utils.MenuModel;
 import java.util.ArrayList;
 
 public class MenuFragmentAdapter extends RecyclerView.Adapter<MenuFragmentAdapter.ViewHolder> {
-    private ArrayList<MenuRecyclerviewAdapter> adapters;
-    private Context context;
+    private final ArrayList<MenuRecyclerviewAdapter> adapters;
+    private final Context context;
 
     public MenuFragmentAdapter(ArrayList<MenuRecyclerviewAdapter> adapters, Context context) {
         this.adapters = adapters;

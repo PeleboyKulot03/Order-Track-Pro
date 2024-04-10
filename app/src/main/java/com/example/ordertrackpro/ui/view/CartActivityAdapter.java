@@ -1,6 +1,11 @@
 package com.example.ordertrackpro.ui.view;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +17,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ordertrackpro.R;
+import com.example.ordertrackpro.ui.customViews.ShowAddItem;
 import com.example.ordertrackpro.utils.CartModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CartActivityAdapter extends RecyclerView.Adapter<CartActivityAdapter.ViewHolder> {
     private final ArrayList<CartModel> models;
     private final Context context;
     private final CartModel cartModel;
     private String totalString;
-    public CartActivityAdapter(ArrayList<CartModel> models, Context context, CartModel cartModel) {
+    private Activity activity;
+    public CartActivityAdapter(ArrayList<CartModel> models, Context context, CartModel cartModel, Activity activity) {
         this.models = models;
         this.context = context;
         this.cartModel = cartModel;
+        this.activity = activity;
     }
 
     @NonNull
@@ -47,18 +56,42 @@ public class CartActivityAdapter extends RecyclerView.Adapter<CartActivityAdapte
         holder.qtyNumber.setText(String.valueOf(model.getQtyNumber()));
         holder.add.setOnClickListener(v -> {
             int curQty = Integer.parseInt(holder.qtyNumber.getText().toString()) + 1;
-            cartModel.updateItem(model.getName(), curQty);
+            double total = model.getPrice() * curQty;
+            cartModel.updateItem(model.getName(), curQty, total, activity);
         });
 
         holder.minus.setOnClickListener(v -> {
             int curQty = Integer.parseInt(holder.qtyNumber.getText().toString()) - 1;
             if (curQty == 0) {
-                cartModel.deleteItem(model.getName());
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setTitle("Delete Caution");
+                alertDialogBuilder.setMessage("Are you sure that you want to delete this item?");
+                alertDialogBuilder.setPositiveButton("Yes", (dialog, which) -> {
+                    cartModel.deleteItem(model.getName(), activity);
+                   dialog.dismiss();
+                });
+                alertDialogBuilder.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                alertDialogBuilder.create().show();
                 return;
             }
-            cartModel.updateItem(model.getName(), curQty);
+            double total = model.getPrice() * curQty;
+            cartModel.updateItem(model.getName(), curQty, total, activity);
         });
-        holder.remove.setOnClickListener(v -> cartModel.deleteItem(model.getName()));
+        holder.remove.setOnClickListener(v -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setTitle("Delete Caution");
+            alertDialogBuilder.setMessage("Are you sure that you want to delete this item?");
+            alertDialogBuilder.setPositiveButton("Yes", (dialog, which) -> {
+                cartModel.deleteItem(model.getName(), activity);
+                dialog.dismiss();
+            });
+            alertDialogBuilder.setNegativeButton("No", (dialog, which) -> {
+                dialog.dismiss();
+            });
+            alertDialogBuilder.create().show();
+        });
     }
 
     @Override
@@ -75,7 +108,6 @@ public class CartActivityAdapter extends RecyclerView.Adapter<CartActivityAdapte
         private final TextView minus;
         private final TextView total;
         private final Button remove;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

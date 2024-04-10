@@ -20,7 +20,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:src="@drawable/bbq_inasal_3pcs___85_pesos"
+                android:src="@drawable/ic_launcher_background"
                 android:id="@+id/foodImage"
                 android:contentDescription="@string/barbeque"
                 />
