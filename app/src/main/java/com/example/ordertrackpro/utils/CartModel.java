@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.ordertrackpro.R;
 import com.example.ordertrackpro.ui.controller.ICartActivity;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class CartModel {
     private String name;
@@ -64,14 +69,14 @@ public class CartModel {
 
     public void updateItem(String name, int qty, double total, Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String cashierName = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child(cashierName).child("cart").child(name).child("qtyNumber").setValue(qty);
-        reference.child(cashierName).child("cart").child(name).child("total").setValue(total);
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child(uid).child("cart").child(name).child("qtyNumber").setValue(qty);
+        reference.child(uid).child("cart").child(name).child("total").setValue(total);
     }
     public void getOrders(ICartActivity iCartActivity, Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String name = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child(name).child("cart").addValueEventListener(new ValueEventListener() {
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child(uid).child("cart").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<CartModel> models = new ArrayList<>();
@@ -91,13 +96,34 @@ public class CartModel {
 
     public void deleteItem(String name, Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String cashierName = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child(cashierName).child("cart").child(name).removeValue();
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child(uid).child("cart").child(name).removeValue();
     }
     public void deleteAll(Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String cashierName = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child(cashierName).child("cart").removeValue();
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child(uid).child("cart").removeValue();
     }
 
+    public void pay(String referenceNum, Activity activity, HashMap<String, CartModel> models, double total, double money, ICartActivity iCartActivity) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        SimpleDateFormat timeFormatter = new SimpleDateFormat(" HH:mm:ss", Locale.ENGLISH);
+        Date date = new Date();
+        String dateText = formatter.format(date);
+        String timeText = timeFormatter.format(date);
+
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child(uid).child("transactions").child(referenceNum).child("orders").setValue(models)
+                .addOnSuccessListener(unused -> reference.child(uid).child("transactions").child(referenceNum).child("money").setValue(money)
+                        .addOnSuccessListener(unused14 -> reference.child(uid).child("transactions").child(referenceNum).child("date").setValue(dateText)
+                                .addOnSuccessListener(unused13 -> reference.child(uid).child("transactions").child(referenceNum).child("time").setValue(timeText)
+                                        .addOnSuccessListener(unused12 -> reference.child(uid).child("cart").removeValue()
+                                                .addOnSuccessListener(unused1 -> iCartActivity.onSuccess(true, "Complete!"))
+                                                .addOnFailureListener(e -> iCartActivity.onSuccess(false, e.getLocalizedMessage())))
+                                        .addOnFailureListener(e -> iCartActivity.onSuccess(false, e.getLocalizedMessage())))
+                                .addOnFailureListener(e -> iCartActivity.onSuccess(false, e.getLocalizedMessage())))
+                        .addOnFailureListener(e -> iCartActivity.onSuccess(false, e.getLocalizedMessage())))
+                .addOnFailureListener(e -> iCartActivity.onSuccess(false, e.getLocalizedMessage()));
+    }
 }

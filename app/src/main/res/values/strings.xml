@@ -24,7 +24,7 @@
     <string name="rice_meal">RICE MEALS</string>
     <string name="drinks_and_dessert">DRINKS AND DESSERTS</string>
     <string name="barbeque">BBQ Inasal</string>
-    <string name="bbq_inasal_price">₱ 85</string>
+    <string name="bbq_inasal_price">₱ 0.00</string>
     <string name="bbq_inasal_qty">x3</string>
     <string name="bbq_inasal">BBQ Inasal</string>
     <string name="add_meal">Add Meal</string>
@@ -54,6 +54,23 @@
     <string name="invalid_warning">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar.</string>
     <string name="okay">Okay</string>
     <string name="category">Category</string>
+    <string name="empty_state">empty state</string>
+    <string name="empty_state_template">Looks like there\'s no item in the cart\nTake a rest, you deserve it!</string>
+    <string name="store_name">GO 2 INASAL</string>
+    <string name="store_address">5 Visayas Street Payatas B, Quezon City, Philippines</string>
+    <string name="store_phone">0915 832 2460</string>
+    <string name="store_email">go2inasal.ph@gmail.com</string>
+    <string name="tagline">A Place where Bacolod\'s Inasal meets Goto Batangas.</string>
+    <string name="cashiers_name">Cashier\'s name: Test Cashier</string>
+    <string name="received_money">Received Money: ₱ 0.00</string>
+    <string name="change">Change: ₱ 0.00</string>
+    <string name="reference">2187341829732189732</string>
+    <string name="time">8:00</string>
+    <string name="date">04–14–2024</string>
+    <string name="payment">PAYMENT</string>
+    <string name="money">Amount Money</string>
+    <string name="get_uid">get uid</string>
+    <string name="total_template">Total</string>
 
 
     <string-array name="categories">

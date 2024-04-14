@@ -25,10 +25,13 @@ public class LoginModel {
         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(task -> {
             SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            Log.i("TAGELE", "signIn: " + task.getUser().getDisplayName());
+            Log.i("TAGELE", "signIn: " + Objects.requireNonNull(Objects.requireNonNull(task.getUser()).getPhotoUrl()));
             editor.putString(activity.getString(R.string.get_user), Objects.requireNonNull(task.getUser()).getDisplayName());
-            editor.putString(activity.getString(R.string.get_photo), Objects.requireNonNull(task.getUser().getPhotoUrl().toString()));
+            editor.putString(activity.getString(R.string.get_photo), Objects.requireNonNull(Objects.requireNonNull(task.getUser().getPhotoUrl()).toString()));
+            editor.putString(activity.getString(R.string.get_uid), Objects.requireNonNull(task.getUser().getUid()));
             editor.apply();
+
+
             iLoginPage.onLogin(true, "Login Successfully");
         }).addOnFailureListener(e -> iLoginPage.onLogin(false, e.getMessage()));
 

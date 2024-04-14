@@ -82,8 +82,8 @@ public class MenuModel {
 
     public void addToCart(IMenuFragment iMenuFragment, CartModel model, Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String name = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child("Employees").child(name).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child("Employees").child(uid).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild(model.getName())) {
@@ -92,7 +92,7 @@ public class MenuModel {
                     snapshot.child(model.getName()).child("total").getRef().setValue(qty * model.getPrice());
                     return;
                 }
-                reference.child("Employees").child(name).child("cart").child(model.getName()).setValue(model).addOnSuccessListener(unused -> iMenuFragment.onAddToCart(true, "Adding item to cart successfully!")).addOnFailureListener(e -> iMenuFragment.onAddToCart(false, e.getLocalizedMessage()));
+                reference.child("Employees").child(uid).child("cart").child(model.getName()).setValue(model).addOnSuccessListener(unused -> iMenuFragment.onAddToCart(true, "Adding item to cart successfully!")).addOnFailureListener(e -> iMenuFragment.onAddToCart(false, e.getLocalizedMessage()));
             }
 
             @Override
@@ -104,8 +104,8 @@ public class MenuModel {
 
     public void getNumOrders(IMenuFragment iMenuFragment, Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.key), Context.MODE_PRIVATE);
-        String name = sharedPref.getString(activity.getString(R.string.get_user), "Cashier's Name");
-        reference.child("Employees").child(name).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+        String uid = sharedPref.getString(activity.getString(R.string.get_uid), "");
+        reference.child("Employees").child(uid).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 iMenuFragment.onGetItemCount((int) snapshot.getChildrenCount());

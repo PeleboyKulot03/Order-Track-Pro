@@ -47,7 +47,6 @@ public class AccountFragment extends Fragment {
             Glide.with(getContext()).load(uri).centerCrop().circleCrop().into(profilePicture);
         }
 
-        Log.i("TAGELE", "onCreateView: " + name);
         displayName.setText(name);
 
         logout.setOnClickListener(v -> {

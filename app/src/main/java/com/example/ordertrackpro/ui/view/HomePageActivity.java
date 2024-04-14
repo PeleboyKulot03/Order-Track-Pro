@@ -18,11 +18,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HomePageActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     public static final int MENU = R.id.menu;
-    public static final int EDIT = R.id.edit;
     public static final int ACCOUNT = R.id.account;
     private AccountFragment accountFragment;
     private MenuFragment menuFragment;
-    private EditFragment editFragment;
 
 
     @Override
@@ -40,18 +38,12 @@ public class HomePageActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(MENU);
         accountFragment = new AccountFragment();
         menuFragment = new MenuFragment();
-        editFragment = new EditFragment();
 
         switchFragment(menuFragment);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == EDIT) {
-                switchFragment(editFragment);
-            }
-
             if (item.getItemId() == MENU) {
                 switchFragment(menuFragment);
             }
-
             if (item.getItemId() == ACCOUNT) {
                 switchFragment(accountFragment);
             }

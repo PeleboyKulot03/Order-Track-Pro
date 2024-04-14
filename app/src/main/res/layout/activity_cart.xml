@@ -30,41 +30,76 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/recyclerView"
+        android:visibility="gone"
         />
 
-    <TextView
-        android:id="@+id/total"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/emptyStateHolder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emptyState"
+            android:contentDescription="@string/empty_state"
+            android:src="@drawable/hamburger_bro"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/empty_state_template"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/black"
+            android:paddingBottom="100dp"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/totalSection"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/total"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:fontFamily="@font/poppins_medium"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        />
-
-    <Button
-        android:id="@+id/cancelOrder"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:textSize="16sp"
-        android:backgroundTint="@color/primary"
-        android:text="@string/cancel_order"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/checkOut"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/black"
-        android:text="@string/check_out"
-        android:textSize="16sp"
-        android:textColor="@color/white" />
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <Button
+            android:id="@+id/cancelOrder"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:backgroundTint="@color/primary"
+            android:text="@string/cancel_order"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/checkOut"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/black"
+            android:text="@string/check_out"
+            android:textSize="16sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 
 </LinearLayout>

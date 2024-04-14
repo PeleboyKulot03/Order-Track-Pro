@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         model.isSignedIn();
     }
 
