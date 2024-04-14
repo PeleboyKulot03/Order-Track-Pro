@@ -57,7 +57,7 @@
     <string name="empty_state">empty state</string>
     <string name="empty_state_template">Looks like there\'s no item in the cart\nTake a rest, you deserve it!</string>
     <string name="store_name">GO 2 INASAL</string>
-    <string name="store_address">5 Visayas Street Payatas B, Quezon City, Philippines</string>
+    <string name="store_address">5 Visayas Street Payatas B,\nQuezon City, Philippines</string>
     <string name="store_phone">0915 832 2460</string>
     <string name="store_email">go2inasal.ph@gmail.com</string>
     <string name="tagline">A Place where Bacolod\'s Inasal meets Goto Batangas.</string>

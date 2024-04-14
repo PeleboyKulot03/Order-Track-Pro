@@ -14,9 +14,9 @@
         android:orientation="vertical"
         >
         <ImageView
-            android:layout_margin="10dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/logo"
             android:contentDescription="@string/logo"
             android:layout_gravity="center"
@@ -100,7 +100,6 @@
         <LinearLayout
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -117,6 +116,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/qty_template"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:id="@+id/qty"/>
@@ -126,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/price"
                 android:textColor="@color/black"
+                android:textAlignment="center"
                 android:textSize="16sp"
                 android:id="@+id/price"/>
             <TextView
@@ -135,9 +136,18 @@
                 android:text="@string/total_template"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:textAlignment="center"
                 />
         </LinearLayout>
-
+        <View
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -194,6 +204,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             />
+
 
         <LinearLayout
             android:gravity="center_vertical"
