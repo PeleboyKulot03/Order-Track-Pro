@@ -23,7 +23,7 @@
     <string name="ala_cart">ALA CARTE</string>
     <string name="rice_meal">RICE MEALS</string>
     <string name="drinks_and_dessert">DRINKS AND DESSERTS</string>
-    <string name="barbeque">barbeque</string>
+    <string name="barbeque">BBQ Inasal</string>
     <string name="bbq_inasal_price">₱ 85</string>
     <string name="bbq_inasal_qty">x3</string>
     <string name="bbq_inasal">BBQ Inasal</string>
@@ -43,4 +43,11 @@
     <string name="get_user">current user</string>
     <string name="key">key</string>
     <string name="get_photo">get photo</string>
+    <string name="add_new_meal">ADD NEW MEAL</string>
+    <string name="add_item">add item</string>
+    <string name="food_name">Food Name</string>
+    <string name="price">Price</string>
+    <string name="qty_template">Qty</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="update_item">Update Item</string>
 </resources>
