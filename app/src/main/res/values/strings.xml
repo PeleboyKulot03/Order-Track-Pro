@@ -50,4 +50,16 @@
     <string name="qty_template">Qty</string>
     <string name="delete_item">Delete Item</string>
     <string name="update_item">Update Item</string>
+    <string name="invalid_template">Warning Notice</string>
+    <string name="invalid_warning">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar.</string>
+    <string name="okay">Okay</string>
+    <string name="category">Category</string>
+
+
+    <string-array name="categories">
+        <item>None</item>
+        <item>Ala Carts</item>
+        <item>Drinks and Desert</item>
+        <item>Rice Meal</item>
+    </string-array>
 </resources>

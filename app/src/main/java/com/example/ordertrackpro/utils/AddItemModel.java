@@ -2,8 +2,12 @@ package com.example.ordertrackpro.utils;
 
 import android.net.Uri;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
-import com.example.ordertrackpro.ui.controller.IEditItem;
+
+import com.example.ordertrackpro.ui.controller.IAddItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,14 +20,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.Objects;
 
-public class EditItemModel {
+public class AddItemModel {
     private String name, id, imageUrl;
     private double price;
     private int qty;
     private DatabaseReference reference;
     private StorageReference storageReference;
 
-    public EditItemModel(String imageUrl, String name, double price, int qty, String id) {
+    public AddItemModel(String imageUrl, String name, double price, int qty, String id) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.price = price;
@@ -55,35 +59,25 @@ public class EditItemModel {
         this.imageUrl = imageUrl;
     }
 
-    public EditItemModel() {
+    public AddItemModel() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         reference = database.getReference("Products");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
     }
 
-    public void updateItem(EditItemModel model, IEditItem iEditItem, String classification, Uri uri) {
-        if (uri == null) {
-            reference.child(classification).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot meal: snapshot.getChildren()) {
-                        if (Objects.equals(meal.child("id").getValue(String.class), model.getId())) {
-                            meal.getRef().setValue(model).addOnSuccessListener(unused -> iEditItem.onUpdateItem(true, "Updating complete!")).addOnFailureListener(e -> iEditItem.onUpdateItem(false, e.getLocalizedMessage()));
+    public void addNewItem(AddItemModel model, Uri uri, String classification, IAddItem iAddItem) {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot classification: snapshot.getChildren()) {
+                    for (DataSnapshot meal: classification.getChildren()) {
+                        if (meal.child("name").getValue(String.class).equals(model.getName())) {
+                            iAddItem.onAddItem(false, "Food's name is already on the menu");
                             return;
                         }
                     }
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    iEditItem.onUpdateItem(false, error.getMessage());
-                }
-            });
-            return;
-        }
-        storageReference.child("product_images/" + classification + "/" + model.getId() + ".jpg").delete().addOnCompleteListener(task -> {
-            if (task.isComplete()) {
                 storageReference = storageReference.child("product_images/" + classification).child(model.getId() + ".jpg");
                 UploadTask uploadTask = storageReference.putFile(uri);
                 Task<Uri> urlTask = uploadTask.continueWithTask(task1 -> {
@@ -96,30 +90,27 @@ public class EditItemModel {
                     if (task12.isSuccessful()) {
                         Uri downloadUri = task12.getResult();
                         model.setImageUrl(downloadUri.toString());
-                        reference.child(classification).addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child(classification).child(model.getId()).setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot meal: snapshot.getChildren()) {
-                                    if (Objects.equals(meal.child("id").getValue(String.class), model.getId())) {
-                                        meal.getRef().setValue(model).addOnSuccessListener(unused -> iEditItem.onUpdateItem(true, "Updating complete!")).addOnFailureListener(e -> iEditItem.onUpdateItem(false, e.getLocalizedMessage()));
-                                        return;
-                                    }
-                                }
+                            public void onSuccess(Void unused) {
+                                iAddItem.onAddItem(true, "Adding new item Complete!");
                             }
-
+                        }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                iEditItem.onUpdateItem(false, error.getMessage());
+                            public void onFailure(@NonNull Exception e) {
+                                iAddItem.onAddItem(false, e.getLocalizedMessage());
                             }
                         });
                     } else {
-                        iEditItem.onUpdateItem(false, "An error occurred, please try again later");
+                        iAddItem.onAddItem(false, "An error occurred, please try again later");
                     }
                 });
             }
-            if (task.isCanceled()) {
-                iEditItem.onUpdateItem(false, "Updating Cancelled");
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                iAddItem.onAddItem(false, error.getMessage());
             }
-        }).addOnFailureListener(e -> iEditItem.onUpdateItem(false, e.getLocalizedMessage()));
+        });
     }
 }

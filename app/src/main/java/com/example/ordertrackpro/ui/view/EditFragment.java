@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class EditFragment extends Fragment implements IEditFragment {
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
         secondPhase = view.findViewById(R.id.items);
         progressBar = view.findViewById(R.id.progressBar);
+        ImageView add = view.findViewById(R.id.add);
 
         editModel = new EditModel();
         editModel.getProducts(this);
@@ -75,6 +78,10 @@ public class EditFragment extends Fragment implements IEditFragment {
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
             }
+        });
+
+        add.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), AddItemActivity.class));
         });
         return view;
     }
