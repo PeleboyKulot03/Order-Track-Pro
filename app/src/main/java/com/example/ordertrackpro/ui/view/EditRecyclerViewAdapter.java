@@ -59,6 +59,7 @@ public class EditRecyclerViewAdapter extends RecyclerView.Adapter<EditRecyclerVi
             intent.putExtra("price", model.getPrice());
             intent.putExtra("image", model.getImageUrl());
             intent.putExtra("classification", classification);
+            intent.putExtra("id", model.getId());
             activity.startActivity(intent);
         });
 

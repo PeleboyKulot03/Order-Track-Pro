@@ -13,22 +13,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class EditModel {
-    private String name, imageUrl;
+    private String name, imageUrl, id;
     private double price;
     private int qty;
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
 
-    public EditModel(String imageUrl, String name, double price, int qty) {
+    public EditModel(String imageUrl, String name, double price, int qty, String id) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.price = price;
         this.qty = qty;
+        this.id = id;
     }
     public EditModel() {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getImageUrl() {

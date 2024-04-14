@@ -27,11 +27,12 @@ import com.example.ordertrackpro.utils.EditItemModel;
 
 public class EditItemActivity extends AppCompatActivity implements IEditItem {
     private String name = "";
+    private String id = "";
     private double price = 0.0;
     private int qty = 0;
     private String image = "";
     private String classification = "";
-    private Uri finalUri;
+    private Uri finalUri = null;
     private String newName = "";
     private int newQty = 0;
     private double newPrice = 0.0;
@@ -54,6 +55,7 @@ public class EditItemActivity extends AppCompatActivity implements IEditItem {
             qty = intent.getIntExtra("qty", 0);
             image = intent.getStringExtra("image");
             classification = intent.getStringExtra("classification");
+            id = intent.getStringExtra("id");
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -91,8 +93,8 @@ public class EditItemActivity extends AppCompatActivity implements IEditItem {
             getValues();
             if (hasChanged()) {
                 progressBar.setVisibility(View.VISIBLE);
-                EditItemModel editItemModel = new EditItemModel(image, newName, newPrice, newQty);
-                model.updateItem(editItemModel, EditItemActivity.this, classification, name, finalUri);
+                EditItemModel editItemModel = new EditItemModel(image, newName, newPrice, newQty, id);
+                model.updateItem(editItemModel, EditItemActivity.this, classification, finalUri);
                 return;
             }
             Toast.makeText(this, "Please update at least one field to continue!", Toast.LENGTH_SHORT).show();

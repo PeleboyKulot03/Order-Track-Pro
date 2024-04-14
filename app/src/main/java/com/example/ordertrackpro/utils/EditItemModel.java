@@ -17,17 +17,22 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Objects;
 
 public class EditItemModel {
-    private String name, imageUrl;
+    private String name, id, imageUrl;
     private double price;
     private int qty;
     private DatabaseReference reference;
     private StorageReference storageReference;
 
-    public EditItemModel(String imageUrl, String name, double price, int qty) {
+    public EditItemModel(String imageUrl, String name, double price, int qty, String id) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.price = price;
         this.qty = qty;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -57,14 +62,13 @@ public class EditItemModel {
         storageReference = storage.getReference();
     }
 
-    public void updateItem(EditItemModel model, IEditItem iEditItem, String classification, String oldName, Uri uri) {
-
+    public void updateItem(EditItemModel model, IEditItem iEditItem, String classification, Uri uri) {
         if (uri == null) {
             reference.child(classification).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot meal: snapshot.getChildren()) {
-                        if (Objects.equals(meal.child("name").getValue(String.class), oldName)) {
+                        if (Objects.equals(meal.child("id").getValue(String.class), model.getId())) {
                             meal.getRef().setValue(model).addOnSuccessListener(unused -> iEditItem.onUpdateItem(true, "Updating complete!")).addOnFailureListener(e -> iEditItem.onUpdateItem(false, e.getLocalizedMessage()));
                             return;
                         }
@@ -78,9 +82,9 @@ public class EditItemModel {
             });
             return;
         }
-        storageReference.child("product_images/" + classification + "/" + oldName).delete().addOnCompleteListener(task -> {
+        storageReference.child("product_images/" + classification + "/" + model.getId() + ".jpg").delete().addOnCompleteListener(task -> {
             if (task.isComplete()) {
-                storageReference = storageReference.child("product_images/" + classification).child(model.getName());
+                storageReference = storageReference.child("product_images/" + classification).child(model.getId() + ".jpg");
                 UploadTask uploadTask = storageReference.putFile(uri);
                 Task<Uri> urlTask = uploadTask.continueWithTask(task1 -> {
                     if (!task1.isSuccessful()) {
@@ -96,7 +100,7 @@ public class EditItemModel {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot meal: snapshot.getChildren()) {
-                                    if (Objects.equals(meal.child("name").getValue(String.class), oldName)) {
+                                    if (Objects.equals(meal.child("id").getValue(String.class), model.getId())) {
                                         meal.getRef().setValue(model).addOnSuccessListener(unused -> iEditItem.onUpdateItem(true, "Updating complete!")).addOnFailureListener(e -> iEditItem.onUpdateItem(false, e.getLocalizedMessage()));
                                         return;
                                     }
