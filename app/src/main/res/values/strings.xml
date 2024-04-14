@@ -71,6 +71,8 @@
     <string name="money">Amount Money</string>
     <string name="get_uid">get uid</string>
     <string name="total_template">Total</string>
+    <string name="forgot_password_prompt">Forgot Password</string>
+    <string name="email">email</string>
 
 
     <string-array name="categories">

@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginPage {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
         progressBar = findViewById(R.id.progressBar);
         usernameET = findViewById(R.id.usernameET);
         passwordET = findViewById(R.id.passwordET);
@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginPage {
             String password = passwordET.getText().toString();
             model.signIn(username, password);
         });
+        forgotPassword.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class)));
     }
 
     @Override
