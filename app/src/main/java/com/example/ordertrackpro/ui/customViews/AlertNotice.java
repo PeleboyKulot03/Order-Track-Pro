@@ -16,13 +16,17 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.ordertrackpro.R;
 
 public class AlertNotice extends Dialog {
-    private final String title;
-    private final String description;
+    private String title;
+    private String description;
 
     public AlertNotice(@NonNull Context context, String title, String description) {
         super(context);
         this.title = title;
         this.description = description;
+    }
+
+    public AlertNotice(@NonNull Context context) {
+        super(context);
     }
 
     @Override

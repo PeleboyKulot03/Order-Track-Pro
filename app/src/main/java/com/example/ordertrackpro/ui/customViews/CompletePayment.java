@@ -23,10 +23,15 @@ import java.util.Random;
 
 public class CompletePayment extends Dialog {
 
-    private final double total;
-    private final Activity activity;
+    private double total;
+    private Activity activity;
     private EditText cashET;
     private ICartActivity iCartActivity;
+
+    public CompletePayment(Context context) {
+        super(context);
+    }
+
     public CompletePayment(@NonNull Context context, double total, Activity activity, ICartActivity iCartActivity) {
         super(context);
         this.total = total;

@@ -15,11 +15,15 @@ import com.example.ordertrackpro.ui.controller.IMenuFragment;
 import com.example.ordertrackpro.utils.CartModel;
 
 public class ShowAddItem extends Dialog {
-    private final String name;
-    private final double price;
-    private final int qty;
+    private String name;
+    private double price;
+    private int qty;
     private String totalString;
-    private final IMenuFragment iMenuFragment;
+    private IMenuFragment iMenuFragment;
+
+    public ShowAddItem(@NonNull Context context) {
+        super(context);
+    }
 
     public ShowAddItem(@NonNull Context context, String name, double price, int qty, IMenuFragment iMenuFragment) {
         super(context);

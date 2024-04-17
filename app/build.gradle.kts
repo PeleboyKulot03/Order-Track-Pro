@@ -6,7 +6,9 @@ plugins {
 android {
     namespace = "com.example.ordertrackpro"
     compileSdk = 34
-
+    lint {
+        disable.add("Instantiatable")
+    }
     defaultConfig {
         applicationId = "com.example.ordertrackpro"
         minSdk = 27
